@@ -1,7 +1,7 @@
 import Base from "./Base";
 import { Client, GuildMember, Snowflake, User, Permissions, SnowflakeUtil, Guild } from "discord.js"
 import { APIGuildMember, APIInteraction, InteractionType } from "discord-api-types/v9";
-import { InteractionTypes, TextBasedChannels, isTextBasedChannel, CacheType, hasProperty, MessageComponentTypes } from "../Constants"
+import { InteractionTypes, TextBasedChannels, isTextBasedChannel, CacheType, hasProperty, MessageComponentTypes } from "../Constants";
 
 class Interaction<Cached extends CacheType = CacheType> extends Base {
   public type: InteractionType;
@@ -76,9 +76,18 @@ class Interaction<Cached extends CacheType = CacheType> extends Base {
   };
   isButton(): this is ButtonInteraction<Cached> {
     if (!hasProperty(this, "componentType")) return false;
+    if (typeof this.componentType !== "number") return false;
     return (
       InteractionTypes[this.type] === InteractionTypes.MESSAGE_COMPONENT &&
       MessageComponentTypes[this.componentType] === MessageComponentTypes.BUTTON
+    );
+  }
+  isSelectMenu(): this is SelectMenuInteraction<Cached> {
+    if (!hasProperty(this, "componentType")) return false;
+    if (typeof this.componentType !== "number") return false;
+    return (
+      InteractionTypes[this.type] === InteractionTypes.MESSAGE_COMPONENT &&
+      MessageComponentTypes[this.componentType] === MessageComponentTypes.SELECT_MENU
     );
   }
 }
