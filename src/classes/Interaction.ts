@@ -1,3 +1,5 @@
+"use strict";
+
 import Base from "./Base";
 import { Client, GuildMember, Snowflake, User, Permissions, SnowflakeUtil, Guild } from "discord.js"
 import { APIGuildMember, APIInteraction, InteractionType } from "discord-api-types/v9";

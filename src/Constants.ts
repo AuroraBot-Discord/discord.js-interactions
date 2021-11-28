@@ -1,4 +1,6 @@
-import { DMChannel, NewsChannel, Snowflake, TextChannel, Channel } from "discord.js";
+"use strict";
+
+import { DMChannel, NewsChannel, Snowflake, TextChannel, Channel, MessageOptions } from "discord.js";
 
 function createEnum(keys: (string | null)[]) {
   const obj = {} as any;
@@ -27,6 +29,23 @@ function hasProperty<K extends string>(
   return x instanceof Object && name in x;
 };
 
+type InteractionReplyOptions = MessageOptions & {
+  ephemeral?: boolean;
+  fetchReply: boolean;
+};
+
 const MessageComponentTypes = createEnum([null, 'ACTION_ROW', 'BUTTON', 'SELECT_MENU']);
 
-export { InteractionTypes, TextBasedChannels, isTextBasedChannel, CacheType, hasProperty, MessageComponentTypes };
+const InteractionResponseTypes = createEnum([
+  null,
+  'PONG',
+  null,
+  null,
+  'CHANNEL_MESSAGE_WITH_SOURCE',
+  'DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE',
+  'DEFERRED_MESSAGE_UPDATE',
+  'UPDATE_MESSAGE',
+  'APPLICATION_COMMAND_AUTOCOMPLETE_RESULT',
+]);
+
+export { InteractionTypes, TextBasedChannels, isTextBasedChannel, CacheType, hasProperty, MessageComponentTypes, InteractionResponseTypes, InteractionReplyOptions };

@@ -1,3 +1,5 @@
+"use strict";
+
 import {
   Client,
   DMChannel,
@@ -9,6 +11,7 @@ import {
 } from "discord.js";
 import { APIInteraction } from "discord-api-types";
 import Interaction from "./classes/Interaction";
+import { hasProperty } from "./Constants"
 
 let ver: string[] | number = version.split("");
 if (ver.includes('(')) {

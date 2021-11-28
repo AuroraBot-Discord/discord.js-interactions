@@ -1,3 +1,5 @@
+"use strict";
+
 import { Client } from "discord.js";
 
 class Base {
