@@ -3,6 +3,7 @@
 import { APIInteraction } from "discord-api-types";
 import { DiscordAPIError, MessageFlags, APIMessage, Client, Snowflake, MessageTarget, StringResolvable, MessageAdditions, Webhook, WebhookClient } from "discord.js"
 import { InteractionResponseTypes, InteractionReplyOptions } from "../Constants";
+import InteractionWebhook from "../classes/InteractionWebhook";
 
 class InteractionResponses {
   public id: Snowflake;
@@ -11,7 +12,7 @@ class InteractionResponses {
   public replied: boolean;
   public ephemeral?: boolean;
   public client: Client;
-  public webhook: WebhookClient;
+  public webhook: InteractionWebhook;
   constructor(client: Client, data: APIInteraction) {
     this.id = data.id;
     this.token = data.token;
@@ -19,7 +20,7 @@ class InteractionResponses {
     this.replied = false;
     this.ephemeral = undefined;
     this.client = client;
-    this.webhook = new WebhookClient(data.application_id, data.token, client.options)
+    this.webhook = new InteractionWebhook(client, data.application_id, data.token);
   }
   async deferReply(options = {} as InteractionReplyOptions) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
@@ -38,7 +39,7 @@ class InteractionResponses {
     return options.fetchReply ? this.fetchReply() : undefined;
   }
 
-  async reply(content: StringResolvable | APIMessage, options: InteractionReplyOptions) {
+  async reply(content: StringResolvable, options: InteractionReplyOptions) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
     this.ephemeral = options.ephemeral ?? false;
 
